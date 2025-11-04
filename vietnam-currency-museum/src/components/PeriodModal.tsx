@@ -1,15 +1,32 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Calendar, Info } from 'lucide-react';
-import type { CurrencyPeriod } from '../types';
+import { X, Calendar, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { Period, Timeline, CurrencyItem } from '../types';
 import './PeriodModal.css';
 
 interface PeriodModalProps {
-  period: CurrencyPeriod;
+  period: Period;
+  timeline: Timeline;
+  item: CurrencyItem;
   language: 'vi' | 'en';
   onClose: () => void;
 }
 
-export const PeriodModal = ({ period, language, onClose }: PeriodModalProps) => {
+export const PeriodModal = ({ period, timeline, item, language, onClose }: PeriodModalProps) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? item.images.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === item.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
   return (
     <motion.div
       className="modal-overlay"
@@ -31,23 +48,50 @@ export const PeriodModal = ({ period, language, onClose }: PeriodModalProps) => 
         </button>
 
         <div className="modal-header">
-          <h2 className="modal-title">{period.period}</h2>
+          <div className="modal-period-label">
+            {language === 'en' ? period.nameEn : period.name}
+          </div>
+          <h2 className="modal-title">
+            {language === 'en' ? timeline.nameEn : timeline.name}
+          </h2>
           <div className="modal-time">
             <Calendar size={20} />
-            <span>{period.timeRange}</span>
+            <span>{timeline.timeRange}</span>
           </div>
         </div>
 
-        {period.image && (
-          <div className="modal-image">
-            <img
-              src={period.image}
-              alt={period.period}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800';
-              }}
-            />
+        {item.images && item.images.length > 0 && (
+          <div className="modal-image-gallery">
+            <div className="modal-image">
+              <img
+                src={item.images[currentImageIndex]}
+                alt={`${language === 'en' ? timeline.nameEn : timeline.name} - ${currentImageIndex + 1}`}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800';
+                }}
+              />
+            </div>
+            
+            {item.images.length > 1 && (
+              <>
+                <button className="image-nav prev" onClick={handlePrevImage}>
+                  <ChevronLeft size={24} />
+                </button>
+                <button className="image-nav next" onClick={handleNextImage}>
+                  <ChevronRight size={24} />
+                </button>
+                <div className="image-indicators">
+                  {item.images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -58,41 +102,47 @@ export const PeriodModal = ({ period, language, onClose }: PeriodModalProps) => 
               <h3>{language === 'vi' ? 'Mô tả chi tiết' : 'Detailed Description'}</h3>
             </div>
             <p className="modal-description">
-              {language === 'en' && period.descriptionEn
-                ? period.descriptionEn
-                : period.description}
+              {language === 'en' ? item.descriptionEn : item.description}
             </p>
           </div>
 
-          {period.startYear && period.endYear && (
-            <div className="modal-stats">
-              <div className="stat-item">
-                <span className="stat-label">
-                  {language === 'vi' ? 'Năm bắt đầu' : 'Start Year'}
-                </span>
-                <span className="stat-value">{period.startYear}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">
-                  {language === 'vi' ? 'Năm kết thúc' : 'End Year'}
-                </span>
-                <span className="stat-value">
-                  {period.endYear === 2025 
-                    ? (language === 'vi' ? 'Nay' : 'Present')
-                    : period.endYear}
-                </span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">
-                  {language === 'vi' ? 'Thời gian' : 'Duration'}
-                </span>
-                <span className="stat-value">
-                  {period.endYear - period.startYear}{' '}
-                  {language === 'vi' ? 'năm' : 'years'}
-                </span>
-              </div>
+          <div className="modal-section">
+            <div className="section-header">
+              <Info size={20} />
+              <h3>{language === 'vi' ? 'Về thời kỳ này' : 'About This Period'}</h3>
             </div>
-          )}
+            <p className="modal-description period-desc">
+              {language === 'en' ? period.descriptionEn : period.description}
+            </p>
+          </div>
+
+          <div className="modal-stats">
+            <div className="stat-item">
+              <span className="stat-label">
+                {language === 'vi' ? 'Năm bắt đầu' : 'Start Year'}
+              </span>
+              <span className="stat-value">{timeline.startYear}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">
+                {language === 'vi' ? 'Năm kết thúc' : 'End Year'}
+              </span>
+              <span className="stat-value">
+                {timeline.endYear === 2025 
+                  ? (language === 'vi' ? 'Nay' : 'Present')
+                  : timeline.endYear}
+              </span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">
+                {language === 'vi' ? 'Thời gian' : 'Duration'}
+              </span>
+              <span className="stat-value">
+                {timeline.endYear - timeline.startYear}{' '}
+                {language === 'vi' ? 'năm' : 'years'}
+              </span>
+            </div>
+          </div>
         </div>
       </motion.div>
     </motion.div>

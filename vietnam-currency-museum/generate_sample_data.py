@@ -1,6 +1,16 @@
 import json
 import re
 
+def load_translations():
+    """Load manual translations from translations.json"""
+    try:
+        with open('translations.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data.get('descriptions', {})
+    except FileNotFoundError:
+        print("⚠️ Warning: translations.json not found, will use Vietnamese for descriptionEn")
+        return {}
+
 def convert_gdrive_link(url):
     """Convert various Google Drive URL formats to direct view URL"""
     if 'drive.google.com' in url:
@@ -28,8 +38,20 @@ def escape_string(s):
     s = s.replace('"', '\\"')    # Escape double quotes
     return s
 
-def translate_to_english(text):
-    """Translate Vietnamese text to English, preserving Chinese characters"""
+def get_translation(item_id, vietnamese_text, translations):
+    """Get English translation from translations dict"""
+    item_key = str(item_id)
+    if item_key in translations:
+        trans = translations[item_key]
+        # Always return English translation if item ID exists
+        return trans.get('en', vietnamese_text)
+    # Fallback to Vietnamese if no translation found
+    print(f"⚠️ Warning: No translation found for item ID {item_id}")
+    return vietnamese_text
+
+def translate_to_english_OLD_FUNCTION(text):
+    """OLD AUTOMATIC TRANSLATION - NOT USED ANYMORE
+    Translate Vietnamese text to English, preserving Chinese characters"""
     
     # Multi-word phrases (translate first to avoid conflicts)
     text = text.replace('đồng tiền', 'coin')
@@ -299,6 +321,10 @@ def translate_to_english(text):
 with open('structured_data.json', 'r', encoding='utf-8') as f:
     periods_data = json.load(f)
 
+# Load manual translations
+translations = load_translations()
+print(f"📚 Loaded {len(translations)} translations from translations.json")
+
 # Translations
 period_trans = {
     'Thời phong kiến (970–1884)': ('Feudal Period (970-1884)', 'The feudal period of Vietnam from 970 to 1884, marking the birth and development of the nation\\\'s first independent monetary system with unique coins bearing Vietnamese royal seals.'),
@@ -339,6 +365,7 @@ export const sampleCurrencyData: Period[] = [
 """
 
 pid = 1
+global_item_id = 1  # Track item ID across all periods and timelines
 for period in periods_data:
     pname = period['name']
     pname_en, pdesc_en = period_trans.get(pname, (pname, 'Historical period of Vietnamese currency development.'))
@@ -395,7 +422,8 @@ for period in periods_data:
         iid = 1
         for item in timeline['items']:
             desc = escape_string(item['description'])
-            desc_en = translate_to_english(item['description'])
+            # Use manual translation from translations.json
+            desc_en = get_translation(global_item_id, item['description'], translations)
             desc_en = escape_string(desc_en)
             
             imgs = ',\n              '.join([f"'{convert_gdrive_link(img)}'" for img in item['images']])
@@ -410,6 +438,7 @@ for period in periods_data:
           }},
 """
             iid += 1
+            global_item_id += 1
         
         ts += """        ],
       },

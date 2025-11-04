@@ -1,30 +1,42 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, Calendar, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Period, Timeline, CurrencyItem } from '../types';
+import type { Period, Timeline } from '../types';
 import './PeriodModal.css';
 
 interface PeriodModalProps {
   period: Period;
   timeline: Timeline;
-  item: CurrencyItem;
   language: 'vi' | 'en';
   onClose: () => void;
 }
 
-export const PeriodModal = ({ period, timeline, item, language, onClose }: PeriodModalProps) => {
+export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModalProps) => {
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const currentItem = timeline.items[currentItemIndex];
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prev) => 
-      prev === 0 ? item.images.length - 1 : prev - 1
+      prev === 0 ? currentItem.images.length - 1 : prev - 1
     );
   };
 
   const handleNextImage = () => {
     setCurrentImageIndex((prev) => 
-      prev === item.images.length - 1 ? 0 : prev + 1
+      prev === currentItem.images.length - 1 ? 0 : prev + 1
     );
+  };
+
+  const handlePrevItem = () => {
+    setCurrentItemIndex((prev) => prev === 0 ? timeline.items.length - 1 : prev - 1);
+    setCurrentImageIndex(0);
+  };
+
+  const handleNextItem = () => {
+    setCurrentItemIndex((prev) => prev === timeline.items.length - 1 ? 0 : prev + 1);
+    setCurrentImageIndex(0);
   };
 
   return (
@@ -60,11 +72,27 @@ export const PeriodModal = ({ period, timeline, item, language, onClose }: Perio
           </div>
         </div>
 
-        {item.images && item.images.length > 0 && (
+        <div className="modal-items-navigation">
+          {timeline.items.length > 1 && (
+            <>
+              <button className="item-nav prev" onClick={handlePrevItem} title={language === 'vi' ? 'Hiện vật trước' : 'Previous item'}>
+                <ChevronLeft size={20} />
+              </button>
+              <span className="item-counter">
+                {language === 'vi' ? 'Hiện vật' : 'Item'} {currentItemIndex + 1} / {timeline.items.length}
+              </span>
+              <button className="item-nav next" onClick={handleNextItem} title={language === 'vi' ? 'Hiện vật sau' : 'Next item'}>
+                <ChevronRight size={20} />
+              </button>
+            </>
+          )}
+        </div>
+
+        {currentItem.images && currentItem.images.length > 0 && (
           <div className="modal-image-gallery">
             <div className="modal-image">
               <img
-                src={item.images[currentImageIndex]}
+                src={currentItem.images[currentImageIndex]}
                 alt={`${language === 'en' ? timeline.nameEn : timeline.name} - ${currentImageIndex + 1}`}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -73,7 +101,7 @@ export const PeriodModal = ({ period, timeline, item, language, onClose }: Perio
               />
             </div>
             
-            {item.images.length > 1 && (
+            {currentItem.images.length > 1 && (
               <>
                 <button className="image-nav prev" onClick={handlePrevImage}>
                   <ChevronLeft size={24} />
@@ -82,7 +110,7 @@ export const PeriodModal = ({ period, timeline, item, language, onClose }: Perio
                   <ChevronRight size={24} />
                 </button>
                 <div className="image-indicators">
-                  {item.images.map((_, index) => (
+                  {currentItem.images.map((_, index) => (
                     <button
                       key={index}
                       className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
@@ -102,7 +130,7 @@ export const PeriodModal = ({ period, timeline, item, language, onClose }: Perio
               <h3>{language === 'vi' ? 'Mô tả chi tiết' : 'Detailed Description'}</h3>
             </div>
             <p className="modal-description">
-              {language === 'en' ? item.descriptionEn : item.description}
+              {language === 'en' ? currentItem.descriptionEn : currentItem.description}
             </p>
           </div>
 

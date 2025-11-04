@@ -10,4 +10,13 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+    alias: {
+      '@': '/src',
+    },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-vertical-timeline-component'],
+  },
 })

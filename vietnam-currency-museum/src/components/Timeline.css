@@ -1,0 +1,112 @@
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #8B7355;
+}
+
+.empty-state svg {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+/* Timeline customization */
+.vertical-timeline-element-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(218, 165, 32, 0.4) !important;
+}
+
+.timeline-date {
+  color: #8B7355 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-content {
+  padding: 0.5rem;
+}
+
+.timeline-title {
+  margin: 0 0 0.5rem 0;
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.timeline-subtitle {
+  margin: 0 0 1rem 0;
+  color: #DAA520;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.timeline-image {
+  width: 100%;
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.timeline-image:hover img {
+  transform: scale(1.05);
+}
+
+.timeline-description {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.read-more {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #DAA520 0%, #B8860B 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+}
+
+.read-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.4);
+  background: linear-gradient(135deg, #E5B840 0%, #C9941D 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timeline-title {
+    font-size: 1.25rem;
+  }
+
+  .timeline-image {
+    height: 200px;
+  }
+
+  .timeline-description {
+    font-size: 0.9rem;
+  }
+}

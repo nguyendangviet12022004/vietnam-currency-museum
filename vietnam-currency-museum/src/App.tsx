@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useLanguage } from './hooks/useLanguage';
+import { useCurrencyData } from './hooks/useCurrencyData';
+import { sampleCurrencyData } from './data/sampleData';
+import { Header } from './components/Header';
+import { SearchFilter } from './components/SearchFilter';
+import { Timeline } from './components/Timeline';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { language, toggleLanguage } = useLanguage();
+  const { filteredData, filters, applyFilters, resetFilters } =
+    useCurrencyData(sampleCurrencyData);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <div className="app">
+      <Header language={language} onLanguageToggle={toggleLanguage} />
+      
+      <main className="main-content">
+        <div className="container">
+          <SearchFilter
+            filters={filters}
+            onFilterChange={applyFilters}
+            onReset={resetFilters}
+            language={language}
+          />
+          
+          <Timeline data={filteredData} language={language} />
+        </div>
+      </main>
+
+      <footer className="app-footer">
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          {language === 'vi'
+            ? '© 2025 Bảo tàng Tiền tệ Việt Nam - Lịch sử và Di sản'
+            : '© 2025 Vietnam Currency Museum - History and Heritage'}
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;

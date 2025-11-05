@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useMemo, useCallback } from 'react';
 import { X, Calendar, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Period, Timeline } from '../types';
 import './PeriodModal.css';
@@ -14,50 +13,46 @@ interface PeriodModalProps {
 export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModalProps) => {
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
-  const currentItem = timeline.items[currentItemIndex];
+  const currentItem = useMemo(() => timeline.items[currentItemIndex], [timeline.items, currentItemIndex]);
 
-  const handlePrevImage = () => {
+  const handlePrevImage = useCallback(() => {
+    setImageLoaded(false);
     setCurrentImageIndex((prev) => 
       prev === 0 ? currentItem.images.length - 1 : prev - 1
     );
-  };
+  }, [currentItem.images.length]);
 
-  const handleNextImage = () => {
+  const handleNextImage = useCallback(() => {
+    setImageLoaded(false);
     setCurrentImageIndex((prev) => 
       prev === currentItem.images.length - 1 ? 0 : prev + 1
     );
-  };
+  }, [currentItem.images.length]);
 
-  const handlePrevItem = () => {
+  const handlePrevItem = useCallback(() => {
+    setImageLoaded(false);
     setCurrentItemIndex((prev) => prev === 0 ? timeline.items.length - 1 : prev - 1);
     setCurrentImageIndex(0);
-  };
+  }, [timeline.items.length]);
 
-  const handleNextItem = () => {
+  const handleNextItem = useCallback(() => {
+    setImageLoaded(false);
     setCurrentItemIndex((prev) => prev === timeline.items.length - 1 ? 0 : prev + 1);
     setCurrentImageIndex(0);
-  };
+  }, [timeline.items.length]);
 
   return (
-    <motion.div
-      className="modal-overlay"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-    >
-      <motion.div
-        className="modal-content"
-        initial={{ scale: 0.8, opacity: 0, y: 50 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.8, opacity: 0, y: 50 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="modal-close" onClick={onClose}>
-          <X size={24} />
-        </button>
+    <>
+      <div className="modal-overlay" onClick={onClose}>
+        <div
+          className="modal-content"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button className="modal-close" onClick={onClose}>
+            <X size={24} />
+          </button>
 
         <div className="modal-header">
           <div className="modal-period-label">
@@ -91,12 +86,21 @@ export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModal
         {currentItem.images && currentItem.images.length > 0 && (
           <div className="modal-image-gallery">
             <div className="modal-image">
+              {!imageLoaded && (
+                <div className="image-loader">
+                  <div className="spinner"></div>
+                </div>
+              )}
               <img
                 src={currentItem.images[currentImageIndex]}
                 alt={`${language === 'en' ? timeline.nameEn : timeline.name} - ${currentImageIndex + 1}`}
+                loading="lazy"
+                style={{ opacity: imageLoaded ? 1 : 0 }}
+                onLoad={() => setImageLoaded(true)}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800';
+                  setImageLoaded(true);
                 }}
               />
             </div>
@@ -172,7 +176,8 @@ export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModal
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+        </div>
+      </div>
+    </>
   );
 };

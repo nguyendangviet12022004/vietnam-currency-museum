@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from './TimelineCompat';
 import { Calendar, Info } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { CSSTransition } from 'react-transition-group';
 import type { Period, Timeline as TimelineType } from '../types';
 import { PeriodModal } from './PeriodModal';
 import './Timeline.css';
@@ -18,6 +19,7 @@ interface ModalData {
 
 export const Timeline = ({ data, language }: TimelineProps) => {
   const [selectedData, setSelectedData] = useState<ModalData | null>(null);
+  const nodeRef = useRef(null);
 
   const handleTimelineClick = (period: Period, timeline: TimelineType) => {
     setSelectedData({ period, timeline });
@@ -78,7 +80,7 @@ export const Timeline = ({ data, language }: TimelineProps) => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: globalIndex * 0.1 }}
+                  transition={{ duration: 0.3, delay: Math.min(globalIndex * 0.05, 0.5) }}
                   className="timeline-content"
                 >
                   <div className="timeline-period-label">
@@ -121,16 +123,24 @@ export const Timeline = ({ data, language }: TimelineProps) => {
         ))}
       </VerticalTimeline>
 
-      <AnimatePresence>
-        {selectedData && (
-          <PeriodModal
-            period={selectedData.period}
-            timeline={selectedData.timeline}
-            language={language}
-            onClose={handleCloseModal}
-          />
-        )}
-      </AnimatePresence>
+      <CSSTransition
+        in={selectedData !== null}
+        timeout={150}
+        classNames="modal"
+        unmountOnExit
+        nodeRef={nodeRef}
+      >
+        <div ref={nodeRef}>
+          {selectedData && (
+            <PeriodModal
+              period={selectedData.period}
+              timeline={selectedData.timeline}
+              language={language}
+              onClose={handleCloseModal}
+            />
+          )}
+        </div>
+      </CSSTransition>
     </>
   );
 };

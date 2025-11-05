@@ -1,11 +1,52 @@
+/* React Transition Group animations */
+.modal-enter .modal-overlay {
+  opacity: 0;
+}
+
+.modal-enter-active .modal-overlay {
+  opacity: 1;
+  transition: opacity 150ms ease-out;
+}
+
+.modal-exit .modal-overlay {
+  opacity: 1;
+}
+
+.modal-exit-active .modal-overlay {
+  opacity: 0;
+  transition: opacity 150ms ease-in;
+}
+
+.modal-enter .modal-content {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.modal-enter-active .modal-content {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+}
+
+.modal-exit .modal-content {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active .modal-content {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 150ms ease-in, transform 150ms ease-in;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,9 +61,11 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   position: relative;
   border: 3px solid rgba(218, 165, 32, 0.3);
+  will-change: transform, opacity;
 }
 
 .modal-close {
@@ -69,15 +112,18 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   color: #B8860B;
+}
+
+.item-nav:active {
+  transform: scale(0.95);
 }
 
 .item-nav:hover {
   background: #DAA520;
   color: white;
   border-color: #DAA520;
-  transform: scale(1.1);
 }
 
 .item-counter {
@@ -131,37 +177,64 @@
   width: 100%;
   height: 400px;
   overflow: hidden;
+  position: relative;
+  background: #f5f5f5;
 }
 
 .modal-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: opacity 0.2s ease;
+  will-change: opacity;
+}
+
+.image-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(218, 165, 32, 0.2);
+  border-top-color: #DAA520;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .image-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
   z-index: 5;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-nav:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 .image-nav:hover {
   background: #DAA520;
   color: white;
-  transform: translateY(-50%) scale(1.1);
 }
 
 .image-nav.prev {
@@ -189,7 +262,7 @@
   border: 2px solid white;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, transform 0.15s ease;
   padding: 0;
 }
 
@@ -200,6 +273,10 @@
 
 .indicator:hover {
   background: rgba(255, 255, 255, 0.8);
+}
+
+.indicator:active {
+  transform: scale(0.9);
 }
 
 .modal-body {

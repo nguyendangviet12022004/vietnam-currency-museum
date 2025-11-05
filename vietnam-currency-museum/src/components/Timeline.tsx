@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from './TimelineCompat';
 import { Calendar, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -19,10 +19,57 @@ interface ModalData {
 
 export const Timeline = ({ data, language }: TimelineProps) => {
   const [selectedData, setSelectedData] = useState<ModalData | null>(null);
+  const [loadingTimelineId, setLoadingTimelineId] = useState<string | null>(null);
+  const [visibleCards, setVisibleCards] = useState<Set<string>>(new Set());
   const nodeRef = useRef(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    // Create Intersection Observer for scroll-triggered animations
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cardId = entry.target.getAttribute('data-card-id');
+            if (cardId) {
+              setVisibleCards((prev) => new Set(prev).add(cardId));
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -100px 0px'
+      }
+    );
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, []);
+
+  const preloadImage = (src?: string) => {
+    if (!src) return;
+    const img = new Image();
+    (img as any).decoding = 'async';
+    img.src = src;
+  };
 
   const handleTimelineClick = (period: Period, timeline: TimelineType) => {
-    setSelectedData({ period, timeline });
+    // Show loading state immediately
+    setLoadingTimelineId(timeline.id);
+    
+    // Preload the first image of this timeline so modal opens smoother
+    const first = timeline.items[0]?.images?.[0];
+    preloadImage(first);
+    
+    // Small delay to show loading state, then open modal
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setSelectedData({ period, timeline });
+        setLoadingTimelineId(null);
+      });
+    });
   };
 
   const handleCloseModal = () => {
@@ -45,9 +92,8 @@ export const Timeline = ({ data, language }: TimelineProps) => {
   return (
     <>
       <VerticalTimeline lineColor="rgba(218, 165, 32, 0.3)">
-        {data.map((period, periodIndex) => (
-          period.timelines.map((timeline, timelineIndex) => {
-            const globalIndex = periodIndex * 10 + timelineIndex;
+        {data.map((period) => (
+          period.timelines.map((timeline) => {
             const firstItem = timeline.items[0];
             const totalItems = timeline.items.length;
             
@@ -78,10 +124,26 @@ export const Timeline = ({ data, language }: TimelineProps) => {
                 onTimelineElementClick={() => handleTimelineClick(period, timeline)}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: Math.min(globalIndex * 0.05, 0.5) }}
+                  data-card-id={`${period.id}-${timeline.id}`}
+                  ref={(el) => {
+                    if (el && observerRef.current && !visibleCards.has(`${period.id}-${timeline.id}`)) {
+                      observerRef.current.observe(el);
+                    }
+                  }}
+                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                  animate={
+                    visibleCards.has(`${period.id}-${timeline.id}`)
+                      ? { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: 0, y: 50, scale: 0.95 }
+                  }
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.1,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
                   className="timeline-content"
+                  onMouseEnter={() => preloadImage(firstItem?.images?.[0])}
+                  onMouseDown={() => preloadImage(firstItem?.images?.[0])}
                 >
                   <div className="timeline-period-label">
                     {language === 'en' ? period.nameEn : period.name}
@@ -96,6 +158,11 @@ export const Timeline = ({ data, language }: TimelineProps) => {
                       <img
                         src={firstItem.images[0]}
                         alt={language === 'en' ? timeline.nameEn : timeline.name}
+                        loading="lazy"
+                        decoding="async"
+                        width={600}
+                        height={375}
+                        sizes="(max-width: 768px) 100vw, 600px"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800';
@@ -113,8 +180,15 @@ export const Timeline = ({ data, language }: TimelineProps) => {
                     {language === 'en' ? firstItem?.descriptionEn : firstItem?.description}
                   </p>
                   
-                  <button className="read-more">
-                    {language === 'vi' ? 'Xem chi tiết' : 'Read more'}
+                  <button className={`read-more ${loadingTimelineId === timeline.id ? 'loading' : ''}`}>
+                    {loadingTimelineId === timeline.id ? (
+                      <>
+                        <span className="button-spinner"></span>
+                        {language === 'vi' ? 'Đang mở...' : 'Opening...'}
+                      </>
+                    ) : (
+                      language === 'vi' ? 'Xem chi tiết' : 'Read more'
+                    )}
                   </button>
                 </motion.div>
               </VerticalTimelineElement>

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { X, Calendar, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Period, Timeline } from '../types';
 import './PeriodModal.css';
@@ -16,6 +16,33 @@ export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModal
   const [imageLoaded, setImageLoaded] = useState(false);
   
   const currentItem = useMemo(() => timeline.items[currentItemIndex], [timeline.items, currentItemIndex]);
+
+  // Preload adjacent images to make navigation instant
+  useEffect(() => {
+    if (!currentItem?.images?.length) return;
+
+    const preload = (src: string) => {
+      const img = new Image();
+      // Hint non-blocking decode
+      (img as any).decoding = 'async';
+      img.src = src;
+    };
+
+    // Preload next and previous image within current item
+    const total = currentItem.images.length;
+    const nextIdx = (currentImageIndex + 1) % total;
+    const prevIdx = (currentImageIndex - 1 + total) % total;
+    preload(currentItem.images[nextIdx]);
+    preload(currentItem.images[prevIdx]);
+
+    // Preload first image of next/prev item
+    const nextItemIdx = (currentItemIndex + 1) % timeline.items.length;
+    const prevItemIdx = (currentItemIndex - 1 + timeline.items.length) % timeline.items.length;
+    const nextItemFirst = timeline.items[nextItemIdx]?.images?.[0];
+    const prevItemFirst = timeline.items[prevItemIdx]?.images?.[0];
+    if (nextItemFirst) preload(nextItemFirst);
+    if (prevItemFirst) preload(prevItemFirst);
+  }, [currentItem, currentImageIndex, currentItemIndex, timeline.items]);
 
   const handlePrevImage = useCallback(() => {
     setImageLoaded(false);
@@ -89,16 +116,22 @@ export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModal
               {!imageLoaded && (
                 <div className="image-loader">
                   <div className="spinner"></div>
+                  <div className="loading-text">
+                    {language === 'vi' ? 'Đang tải ảnh...' : 'Loading image...'}
+                  </div>
                 </div>
               )}
               <img
                 src={currentItem.images[currentImageIndex]}
                 alt={`${language === 'en' ? timeline.nameEn : timeline.name} - ${currentImageIndex + 1}`}
-                loading="lazy"
+                decoding="async"
+                fetchPriority="high"
+                width={1200}
+                height={800}
                 style={{ opacity: imageLoaded ? 1 : 0 }}
                 onLoad={() => setImageLoaded(true)}
                 onError={(e) => {
-                  const target = e.target as HTMLImageElement;
+                  const target = (e.target as HTMLImageElement);
                   target.src = 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800';
                   setImageLoaded(true);
                 }}
@@ -128,25 +161,56 @@ export const PeriodModal = ({ period, timeline, language, onClose }: PeriodModal
         )}
 
         <div className="modal-body">
-          <div className="modal-section">
-            <div className="section-header">
-              <Info size={20} />
-              <h3>{language === 'vi' ? 'Mô tả chi tiết' : 'Detailed Description'}</h3>
-            </div>
-            <p className="modal-description">
-              {language === 'en' ? currentItem.descriptionEn : currentItem.description}
-            </p>
-          </div>
+          {!imageLoaded ? (
+            <>
+              <div className="modal-section">
+                <div className="section-header">
+                  <Info size={20} />
+                  <h3>{language === 'vi' ? 'Mô tả chi tiết' : 'Detailed Description'}</h3>
+                </div>
+                <div className="skeleton-lines">
+                  <div className="skeleton-line" style={{ width: '100%' }}></div>
+                  <div className="skeleton-line" style={{ width: '95%' }}></div>
+                  <div className="skeleton-line" style={{ width: '98%' }}></div>
+                  <div className="skeleton-line" style={{ width: '85%' }}></div>
+                </div>
+              </div>
 
-          <div className="modal-section">
-            <div className="section-header">
-              <Info size={20} />
-              <h3>{language === 'vi' ? 'Về thời kỳ này' : 'About This Period'}</h3>
-            </div>
-            <p className="modal-description period-desc">
-              {language === 'en' ? period.descriptionEn : period.description}
-            </p>
-          </div>
+              <div className="modal-section">
+                <div className="section-header">
+                  <Info size={20} />
+                  <h3>{language === 'vi' ? 'Về thời kỳ này' : 'About This Period'}</h3>
+                </div>
+                <div className="skeleton-lines">
+                  <div className="skeleton-line" style={{ width: '100%' }}></div>
+                  <div className="skeleton-line" style={{ width: '92%' }}></div>
+                  <div className="skeleton-line" style={{ width: '88%' }}></div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="modal-section">
+                <div className="section-header">
+                  <Info size={20} />
+                  <h3>{language === 'vi' ? 'Mô tả chi tiết' : 'Detailed Description'}</h3>
+                </div>
+                <p className="modal-description">
+                  {language === 'en' ? currentItem.descriptionEn : currentItem.description}
+                </p>
+              </div>
+
+              <div className="modal-section">
+                <div className="section-header">
+                  <Info size={20} />
+                  <h3>{language === 'vi' ? 'Về thời kỳ này' : 'About This Period'}</h3>
+                </div>
+                <p className="modal-description period-desc">
+                  {language === 'en' ? period.descriptionEn : period.description}
+                </p>
+              </div>
+            </>
+          )}
 
           <div className="modal-stats">
             <div className="stat-item">

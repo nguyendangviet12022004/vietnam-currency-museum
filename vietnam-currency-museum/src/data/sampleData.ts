@@ -372,6 +372,44 @@ export const sampleCurrencyData: Period[] = [
     description: 'Thời kỳ hiện đại từ thống nhất đến nay, tiền tệ phát triển theo hướng hiện đại hóa với công nghệ polymer và hội nhập quốc tế.',
     descriptionEn: 'Modern period from reunification to present, with currency developing towards modernization, adopting polymer technology, and international integration.',
     timelines: [
+      
+      {
+        id: 'timeline-4-2',
+        name: 'Giai đoạn Sau Thống Nhất ( 1975–1978)',
+        nameEn: 'Post-Reunification Period (1975-1978)',
+        timeRange: '1975-1978',
+        startYear: 1975,
+        endYear: 1978,
+        items: [
+          {
+            id: 'item-4-2-1',
+            images: [
+              '/images/s-l1600 (9).webp',
+              '/images/Tiền Giải Phóng.jpg'
+            ],
+            description: 'Đây là quá trình hợp nhất hệ thống tiền tệ của hai miền sau khi đất nước thống nhất.\n\nTại sao phải đổi tiền?\n\nSau ngày 30 tháng 4 năm 1975, Việt Nam đã thống nhất về mặt lãnh thổ, nhưng về kinh tế, vẫn tồn tại hai hệ thống tiền tệ song song:\n\nMiền Bắc: Sử dụng tiền \"Đồng\" của Việt Nam Dân chủ Cộng hòa.\n\nMiền Nam: Vẫn đang lưu hành tiền của chế độ Việt Nam Cộng hòa.\n\nMột quốc gia thống nhất không thể có hai đồng tiền. Việc hợp nhất tiền tệ là bước đi tất yếu để thống nhất hoàn toàn đất nước về mặt kinh tế và nhà nước.\n\nDiễn biến:\n\nBước 1 (1975 - \"Tiền Giải phóng\"): Ngay sau khi tiếp quản, Chính phủ Cách mạng lâm thời Cộng hòa miền Nam Việt Nam đã phát hành \"tiền Giải phóng\" (còn gọi là \"tiền Ngân hàng Việt Nam\") ở miền Nam để thay thế đồng tiền của chế độ cũ. Đây là một bước đệm chuyển tiếp.\n\nBước 2 (1978 - \"Đồng Thống nhất\"): Nhà nước tiến hành một cuộc đổi tiền quy mô lớn trên cả nước để thu hồi toàn bộ tiền ở miền Bắc và \"tiền Giải phóng\" ở miền Nam, thay thế bằng một loại tiền duy nhất gọi là \"Đồng\" (thường được gọi là \"Đồng Thống nhất\"). Từ thời điểm này, cả nước Việt Nam chỉ sử dụng chung một đơn vị tiền tệ.',
+            descriptionEn: 'This was the process of unifying the currency systems of the two regions after national reunification.\n\nWhy change currency?\n\n- The two regions used two different currencies: the North used Democratic Republic of Vietnam đồng, the South used Republic of Vietnam đồng.\n\n- Need to establish a unified currency system.\n\nExchange method:\n\n- Exchange rate: 1 Northern đồng = 0.8 Southern đồng (later adjusted) → 1 unified đồng.\n\n- Issue new unified currency: Banknotes marked \'State Bank of Vietnam\' (instead of National Bank of Vietnam).'
+          },
+        ],
+      },
+      {
+        id: 'timeline-4-3',
+        name: '1985-1988',
+        nameEn: 'Currency Reform 1985-1988',
+        timeRange: '1985-1988',
+        startYear: 1985,
+        endYear: 1988,
+        items: [
+          {
+            id: 'item-4-3-1',
+            images: [
+              '/images/Bộ Tiền Thống Nhất.jpg'
+            ],
+            description: 'Đây là một trong những nỗ lực cải cách kinh tế quan trọng (và thất bại) ngay trước thềm Đổi Mới 1986. Việc đổi tiền 10:1 chỉ là một phần của một kế hoạch lớn hơn.\n\nTại sao phải đổi tiền? (Bối cảnh)\n\nNền kinh tế Việt Nam lúc này đang trong tình trạng khủng hoảng nghiêm trọng, cơ chế \"bao cấp\" bộc lộ nhiều yếu kém.\n\nLạm phát phi mã: Lạm phát ở mức ba con số, đồng tiền mất giá cực kỳ nhanh chóng. Việc cầm tiền với mệnh giá quá lớn nhưng sức mua lại quá nhỏ gây bất tiện và thể hiện sự bất ổn của kinh tế.\n\nMục tiêu của cải cách \"Giá - Lương - Tiền\": Nhà nước muốn xóa bỏ cơ chế bao cấp, tính toán lại toàn bộ hệ thống giá cả (Giá), cải cách hệ thống lương (Lương), và phát hành đồng tiền mới (Tiền) để ổn định kinh tế.\n\nDiễn biến (Việc đổi 10 đồng cũ = 1 đồng mới):\n\nĐây về bản chất là một hành động \"xóa bớt số 0\" trên đồng tiền.\n\nMục đích là làm cho đồng tiền có giá trị \"gọn\" hơn, hy vọng ổn định tâm lý thị trường và kiểm soát lạm phát.\n\nKết quả: Cuộc cải cách này đã thất bại. Việc đổi tiền không giải quyết được gốc rễ của lạm phát (sản xuất không phát triển), mà việc in thêm tiền mới để trả lương theo hệ thống mới đã lập tức gây ra một đợt siêu lạm phát còn nghiêm trọng hơn trong các năm 1986-1988.\n\nÝ nghĩa: Thất bại của cuộc cải cách \"Giá - Lương - Tiền\" 1985 chính là một trong những lý do cấp bách, đẩy nhanh quyết tâm của Việt Nam phải tiến hành công cuộc Đổi Mới toàn diện vào năm 1986.',
+            descriptionEn: 'This was one of the important (and failed) economic reform attempts just before the Đổi Mới (Renovation) of 1986.\n\nReasons for currency change:\n\n- High inflation, rapidly escalating prices.\n\n- Currency devaluation, economic stagnation.\n\nExchange method:\n\n- Exchange rate: 10 old đồng = 1 new đồng.\n\n- Exchange limit: Each person could only exchange a certain amount (e.g., 2 million old đồng).\n\nResults:\n\n- Currency change did not solve fundamental economic problems.\n\n- Inflation continued to rise.\n\n- People lost confidence in the currency.'
+          },
+        ],
+      },
       {
         id: 'timeline-4-1',
         name: '1990 - nay',
@@ -475,43 +513,6 @@ export const sampleCurrencyData: Period[] = [
             ],
             description: '- Ngày phát hành: 17/12/2003\n\n- Kích thước: 152mm x 65mm.\n\n- Giấy in: Polymer.\n\n- Màu sắc tổng thể: Màu lơ tím sẫm.\n\n- Nội dung mặt trước: Dòng chữ \"Cộng hòa Xã hội Chủ nghĩa Việt Nam\" Quốc huy - Chân dung Chủ tịch Hồ Chí Minh - Mệnh giá 500.000 đồng bằng chữ và số - Hình trang trí hoa văn dân tộc và hoa văn lưới hiện đại.\n\n- Nội dung mặt sau: Dòng chữ \"Ngân hàng Nhà nước Việt Nam\" - Phong cảnh nhà Chủ tịch Hồ Chí Minh ở Kim Liên - Mệnh giá 500.000 đồng bằng chữ và số - Hình trang trí hoa văn dân tộc và hoa văn lưới hiện đại.',
             descriptionEn: '- Issue date: December 17, 2003\n\n- Dimensions: 152mm x 65mm.\n\n- Material: Polymer.\n\n- Overall color: Purple.\n\n- Obverse: Portrait of President Ho Chi Minh.\n\n- Reverse: Image of the Hanoi Opera House.'
-          },
-        ],
-      },
-      {
-        id: 'timeline-4-2',
-        name: 'Giai đoạn Sau Thống Nhất ( 1975–1978)',
-        nameEn: 'Post-Reunification Period (1975-1978)',
-        timeRange: '1975-1978',
-        startYear: 1975,
-        endYear: 1978,
-        items: [
-          {
-            id: 'item-4-2-1',
-            images: [
-              '/images/s-l1600 (9).webp',
-              '/images/Tiền Giải Phóng.jpg'
-            ],
-            description: 'Đây là quá trình hợp nhất hệ thống tiền tệ của hai miền sau khi đất nước thống nhất.\n\nTại sao phải đổi tiền?\n\nSau ngày 30 tháng 4 năm 1975, Việt Nam đã thống nhất về mặt lãnh thổ, nhưng về kinh tế, vẫn tồn tại hai hệ thống tiền tệ song song:\n\nMiền Bắc: Sử dụng tiền \"Đồng\" của Việt Nam Dân chủ Cộng hòa.\n\nMiền Nam: Vẫn đang lưu hành tiền của chế độ Việt Nam Cộng hòa.\n\nMột quốc gia thống nhất không thể có hai đồng tiền. Việc hợp nhất tiền tệ là bước đi tất yếu để thống nhất hoàn toàn đất nước về mặt kinh tế và nhà nước.\n\nDiễn biến:\n\nBước 1 (1975 - \"Tiền Giải phóng\"): Ngay sau khi tiếp quản, Chính phủ Cách mạng lâm thời Cộng hòa miền Nam Việt Nam đã phát hành \"tiền Giải phóng\" (còn gọi là \"tiền Ngân hàng Việt Nam\") ở miền Nam để thay thế đồng tiền của chế độ cũ. Đây là một bước đệm chuyển tiếp.\n\nBước 2 (1978 - \"Đồng Thống nhất\"): Nhà nước tiến hành một cuộc đổi tiền quy mô lớn trên cả nước để thu hồi toàn bộ tiền ở miền Bắc và \"tiền Giải phóng\" ở miền Nam, thay thế bằng một loại tiền duy nhất gọi là \"Đồng\" (thường được gọi là \"Đồng Thống nhất\"). Từ thời điểm này, cả nước Việt Nam chỉ sử dụng chung một đơn vị tiền tệ.',
-            descriptionEn: 'This was the process of unifying the currency systems of the two regions after national reunification.\n\nWhy change currency?\n\n- The two regions used two different currencies: the North used Democratic Republic of Vietnam đồng, the South used Republic of Vietnam đồng.\n\n- Need to establish a unified currency system.\n\nExchange method:\n\n- Exchange rate: 1 Northern đồng = 0.8 Southern đồng (later adjusted) → 1 unified đồng.\n\n- Issue new unified currency: Banknotes marked \'State Bank of Vietnam\' (instead of National Bank of Vietnam).'
-          },
-        ],
-      },
-      {
-        id: 'timeline-4-3',
-        name: '1985-1988',
-        nameEn: 'Currency Reform 1985-1988',
-        timeRange: '1985-1988',
-        startYear: 1985,
-        endYear: 1988,
-        items: [
-          {
-            id: 'item-4-3-1',
-            images: [
-              '/images/Bộ Tiền Thống Nhất.jpg'
-            ],
-            description: 'Đây là một trong những nỗ lực cải cách kinh tế quan trọng (và thất bại) ngay trước thềm Đổi Mới 1986. Việc đổi tiền 10:1 chỉ là một phần của một kế hoạch lớn hơn.\n\nTại sao phải đổi tiền? (Bối cảnh)\n\nNền kinh tế Việt Nam lúc này đang trong tình trạng khủng hoảng nghiêm trọng, cơ chế \"bao cấp\" bộc lộ nhiều yếu kém.\n\nLạm phát phi mã: Lạm phát ở mức ba con số, đồng tiền mất giá cực kỳ nhanh chóng. Việc cầm tiền với mệnh giá quá lớn nhưng sức mua lại quá nhỏ gây bất tiện và thể hiện sự bất ổn của kinh tế.\n\nMục tiêu của cải cách \"Giá - Lương - Tiền\": Nhà nước muốn xóa bỏ cơ chế bao cấp, tính toán lại toàn bộ hệ thống giá cả (Giá), cải cách hệ thống lương (Lương), và phát hành đồng tiền mới (Tiền) để ổn định kinh tế.\n\nDiễn biến (Việc đổi 10 đồng cũ = 1 đồng mới):\n\nĐây về bản chất là một hành động \"xóa bớt số 0\" trên đồng tiền.\n\nMục đích là làm cho đồng tiền có giá trị \"gọn\" hơn, hy vọng ổn định tâm lý thị trường và kiểm soát lạm phát.\n\nKết quả: Cuộc cải cách này đã thất bại. Việc đổi tiền không giải quyết được gốc rễ của lạm phát (sản xuất không phát triển), mà việc in thêm tiền mới để trả lương theo hệ thống mới đã lập tức gây ra một đợt siêu lạm phát còn nghiêm trọng hơn trong các năm 1986-1988.\n\nÝ nghĩa: Thất bại của cuộc cải cách \"Giá - Lương - Tiền\" 1985 chính là một trong những lý do cấp bách, đẩy nhanh quyết tâm của Việt Nam phải tiến hành công cuộc Đổi Mới toàn diện vào năm 1986.',
-            descriptionEn: 'This was one of the important (and failed) economic reform attempts just before the Đổi Mới (Renovation) of 1986.\n\nReasons for currency change:\n\n- High inflation, rapidly escalating prices.\n\n- Currency devaluation, economic stagnation.\n\nExchange method:\n\n- Exchange rate: 10 old đồng = 1 new đồng.\n\n- Exchange limit: Each person could only exchange a certain amount (e.g., 2 million old đồng).\n\nResults:\n\n- Currency change did not solve fundamental economic problems.\n\n- Inflation continued to rise.\n\n- People lost confidence in the currency.'
           },
         ],
       },

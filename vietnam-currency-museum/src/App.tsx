@@ -1,15 +1,11 @@
 import { useLanguage } from './hooks/useLanguage';
-import { useCurrencyData } from './hooks/useCurrencyData';
 import { sampleCurrencyData } from './data/sampleData';
 import { Header } from './components/Header';
-import { SearchFilter } from './components/SearchFilter';
 import { Timeline } from './components/Timeline';
 import './App.css';
 
 function App() {
   const { language, toggleLanguage } = useLanguage();
-  const { filteredData, filters, applyFilters, resetFilters } =
-    useCurrencyData(sampleCurrencyData);
 
   return (
     <div className="app">
@@ -17,14 +13,7 @@ function App() {
       
       <main className="main-content">
         <div className="container">
-          <SearchFilter
-            filters={filters}
-            onFilterChange={applyFilters}
-            onReset={resetFilters}
-            language={language}
-          />
-          
-          <Timeline data={filteredData} language={language} />
+          <Timeline data={sampleCurrencyData} language={language} />
         </div>
       </main>
 

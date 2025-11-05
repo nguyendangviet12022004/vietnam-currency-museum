@@ -130,18 +130,15 @@ export const Timeline = ({ data, language }: TimelineProps) => {
                       observerRef.current.observe(el);
                     }
                   }}
-                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                  animate={
-                    visibleCards.has(`${period.id}-${timeline.id}`)
-                      ? { opacity: 1, y: 0, scale: 1 }
-                      : { opacity: 0, y: 50, scale: 0.95 }
-                  }
+                  initial={{ opacity: 1, y: 0, scale: 1 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{
                     duration: 0.6,
                     delay: 0.1,
                     ease: [0.25, 0.46, 0.45, 0.94]
                   }}
                   className="timeline-content"
+                  style={{ opacity: 1, transform: 'none' }}
                   onMouseEnter={() => preloadImage(firstItem?.images?.[0])}
                   onMouseDown={() => preloadImage(firstItem?.images?.[0])}
                 >
